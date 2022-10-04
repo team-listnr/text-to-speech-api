@@ -58,16 +58,18 @@ Use this endpoint to start converting an article from text to audio.
   ```jsonc
   {
     "voice": string,
-    "content": string[],
     "ssml": string,
-    "title": string,          // Optional
-    "narrationStyle": string, // Optional         
+    "voiceStyle": string, // Optional         
     "globalSpeed": string,    // Optional      
-    "pronunciations": { key: string, value: string }[], // Optional
-    "trimSilence": boolean,   // Optional
-    "transcriptionId": string  // Optional - use it to update the same audio file
   }
   ```
+
+      <!-- "pronunciations": { key: string, value: string }[], // Optional -->
+      <!-- "transcriptionId": string  // Optional - use it to update the same audio file -->
+      <!-- "trimSilence": boolean,   // Optional -->
+
+
+
 
   `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
 
