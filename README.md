@@ -15,11 +15,11 @@ Take a look at the at [voices.listnr.tech/voices](https://voices.listnr.tech/voi
 
 ## Overview of API
 
-There are two endpoints on the API that you will use to convert text to speech:
+Endpoint which is currently available in the API that you will use to convert text to speech:
 1. `/convert-text`: Performs the text-to-speech conversion.
-2. `/convert-article`: Performs the text-to-speech conversion on an article. Given an URL.
-2. `/voices`: Returns a list of available voices.
-3. `/languages`: Returns a list of available languages.
+<!-- 2. `/convert-article`: Performs the text-to-speech conversion on an article. Given an URL. -->
+<!-- 2. `/voices`: Returns a list of available voices. -->
+<!-- 3. `/languages`: Returns a list of available languages. -->
 
 <!-- 2. `/articleStatus`: Lets you know if the conversion is done. -->
 
@@ -48,7 +48,7 @@ Make sure to store your API-Keys privately and do not share it. Never use your A
 
 ### Convert text to speech
 
-- Endpoint:  `./convert`
+- Endpoint:  `./convert-text`
 
 Use this endpoint to start converting an article from text to audio.
 
@@ -59,7 +59,7 @@ Use this endpoint to start converting an article from text to audio.
   {
     "voice": string,
     "content": string[],
-    "ssml": string[],
+    "ssml": string,
     "title": string,          // Optional
     "narrationStyle": string, // Optional         
     "globalSpeed": string,    // Optional      
