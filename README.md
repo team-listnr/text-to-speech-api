@@ -132,30 +132,25 @@ Optional fields are only provided when applicable.
   ```
 - Example (NodeJS Request):
   ```ssml with pauses
-    var request = require('request');
+ var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://bff.listnr.tech/backend/tts/v1/convert-text',
+  'headers': {
+    'x-listnr-tts-token': '',
+    'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
+    "voice": "en-US-GuyNeural"
+  })
 
-    var payload = {
-        "ttsService": "azure",
-        "text": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice": {
-          "value": "en-US-GuyNeural",
-          "lang": "en-US"
-        }
-      };
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
 
-    var options = {
-      'method': 'POST',
-      'url': 'https://bff.listnr.tech/api/tts/v1/convert-text',
-      'headers': {
-        'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z', // YOUR-API-KEY
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-
-    };
-    request(options, function (error, response) {
-      if (error) throw new Error(error);
-      console.log(response.body);
-    });
 
 ```
