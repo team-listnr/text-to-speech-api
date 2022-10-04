@@ -99,9 +99,9 @@ Use this endpoint to start converting an article from text to audio.
 - Response (JSON):
   ```jsonc
   {
-    "status": "transcriping" | "error",
-    "transcriptionId": string,
-    "error": string // Optional
+    "success": boolean,
+    "audioUrl": string,
+    "audioKey": string
   }
   ```
  
