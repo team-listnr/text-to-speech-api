@@ -79,7 +79,7 @@ Use this endpoint to start converting an article from text to audio.
     - `ssml` is a string consisting of multiple one or more paragraphs (divided by p-tags in )in SSML format. [Learn more about SSML](https://www.w3.org/TR/speech-synthesis/). Not all SSML features are supported with all voices.
 
   
-  - `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `narrationStyle` is supported by the voice in your request. [Voices](##Voices)
+  - `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `voiceStyle` is supported by the voice in your request. [Voices](##Voices)
 
   - `globalSpeed` is a string in the format `<number>%`, where `<number>` is in the closed interval of `[20, 200]`. Use this to speed-up, or slow-down the speaking rate of the speech.
 
