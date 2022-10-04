@@ -68,10 +68,6 @@ Use this endpoint to start converting an article from text to audio.
   }
   ```
 
-      <!-- "pronunciations": { key: string, value: string }[], // Optional -->
-      <!-- "transcriptionId": string  // Optional - use it to update the same audio file -->
-      <!-- "trimSilence": boolean,   // Optional -->
-
   - `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
 
 
@@ -99,13 +95,6 @@ Use this endpoint to start converting an article from text to audio.
   }
   ```
  
-
-  ```
-  <!--   "audioDuration": number,  // Optional -->
-  <!--   "voice": string,          // Optional -->
-  <!--   "narrationStyle": string, // Optional -->
-  <!--   "globalSpeed": string,    // Optional -->
-
 
 Optional fields are only provided when applicable.
 
