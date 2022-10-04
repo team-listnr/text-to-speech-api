@@ -72,28 +72,22 @@ Use this endpoint to start converting an article from text to audio.
       <!-- "transcriptionId": string  // Optional - use it to update the same audio file -->
       <!-- "trimSilence": boolean,   // Optional -->
 
+  - `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
 
 
 
-  `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
+    - `ssml` is a string consisting of multiple one or more paragraphs (divided by p-tags in )in SSML format. [Learn more about SSML](https://www.w3.org/TR/speech-synthesis/). Not all SSML features are supported with all voices.
 
-  Only one of `content` or `ssml` can be passed:
-
-    - `content` is an array of strings, where each string represents a paragraph in plain text format.
-
-    - `ssml` is an array of strings, where each string represents a paragraph in SSML format. [Learn more about SSML](https://www.w3.org/TR/speech-synthesis/). Not all SSML features are supported with all voices.
-
-  `title` is a field to name your file. You can use this name to find the audio in your Listnr dashboard.
   
-  `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `narrationStyle` is supported by the voice in your request. [Voices](##Voices)
+  - `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `narrationStyle` is supported by the voice in your request. [Voices](##Voices)
 
-  `globalSpeed` is a string in the format `<number>%`, where `<number>` is in the closed interval of `[20, 200]`. Use this to speed-up, or slow-down the speaking rate of the speech.
+  - `globalSpeed` is a string in the format `<number>%`, where `<number>` is in the closed interval of `[20, 200]`. Use this to speed-up, or slow-down the speaking rate of the speech.
 
-  `audioFormat` is a string representing the format of the audio file. The supported formats are `mp3` and `wav`.
+  - `audioFormat` is a string representing the format of the audio file. The supported formats are `mp3` and `wav`.
 
-  `audioSampleRate` is a string representing the sample rate of the audio file. The supported sample rates are  `24000`, `48000`, 
+  - `audioSampleRate` is a string representing the sample rate of the audio file. The supported sample rates are  `24000`, `48000`, 
 
-  `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
+  - `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
 
 
 - Response (JSON):
@@ -117,7 +111,7 @@ Optional fields are only provided when applicable.
 
 - Examples (cURL Request):
   ```ssml with pauses
-  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/' \
+  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/convert-text' \
       --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -131,7 +125,7 @@ Optional fields are only provided when applicable.
       import requests
     import json
 
-    url = "https://bff.listnr.tech/backend/tts/v1/"
+    url = "https://bff.listnr.tech/backend/tts/v1/convert-text"
 
     payload = json.dumps({
       "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
@@ -162,7 +156,7 @@ Optional fields are only provided when applicable.
 
     var options = {
       'method': 'POST',
-      'url': 'https://bff.listnr.tech/api/tts/v1',
+      'url': 'https://bff.listnr.tech/api/tts/v1/convert-text',
       'headers': {
         'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z', // YOUR-API-KEY
         'Content-Type': 'application/json'
