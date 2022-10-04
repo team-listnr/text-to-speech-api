@@ -118,7 +118,6 @@ Optional fields are only provided when applicable.
 - Examples (cURL Request):
   ```ssml with pauses
   curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/' \
-      --header 'x-listnr-tts-token;' \
       --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -128,7 +127,7 @@ Optional fields are only provided when applicable.
       }'
   ```
 - Example (Python Request):
-      ```
+      ```ssml with pauses
       import requests
     import json
 
@@ -139,7 +138,6 @@ Optional fields are only provided when applicable.
       "voice": "en-US-GuyNeural"
     })
     headers = {
-      'x-listnr-tts-token': '',
       'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
       'Content-Type': 'application/json'
     }
@@ -150,7 +148,7 @@ Optional fields are only provided when applicable.
 
   ```
 - Example (NodeJS Request):
-  ```Using multi voices 
+  ```ssml with pauses
     var request = require('request');
 
     var payload = {
