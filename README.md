@@ -9,6 +9,7 @@ Using a single text-to-speech API in your projects saves you time and offers man
 3. You don't have to worry about API upgrades or changes made on Google, Amazon, IBM and Microsoft.
 4. Any new voices added on these platforms are instantly available to you.
 
+## Voices
 Take a look at the at [voices.listnr.tech/voices](https://voices.listnr.tech/voices) to see all the voices available on Listnr. There you will also find the Voice Identifier, which needs to be passed to the API, when using it.
 
 **Note:** You need to have a Listnr Voices account with word credit to be able to access the API.
@@ -60,7 +61,10 @@ Use this endpoint to start converting an article from text to audio.
     "voice": string,
     "ssml": string,
     "voiceStyle": string, // Optional         
-    "globalSpeed": string,    // Optional      
+    "globalSpeed": string,    // Optional     
+    "audioFormat": string, // Optional 
+    "audioSampleRate": string, // Optional
+    "audioKey": string, // Optional
   }
   ```
 
@@ -81,15 +85,16 @@ Use this endpoint to start converting an article from text to audio.
 
   `title` is a field to name your file. You can use this name to find the audio in your Listnr dashboard.
   
-  `narrationStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `narrationStyle` is supported by the voice in your request. Refer to the [Voices reference file](Voices.md) for more details.
+  `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `narrationStyle` is supported by the voice in your request. [Voices](##Voices)
 
   `globalSpeed` is a string in the format `<number>%`, where `<number>` is in the closed interval of `[20, 200]`. Use this to speed-up, or slow-down the speaking rate of the speech.
 
-  `pronunciations` is an array of key-value pair objects, where `key` is the source string (e.g. `"Listnr"`), and `value` is the target pronunciation (e.g. `"Listnr dot Tech"`). Use this when you want to customize the pronunciation of a certain word/phrase (e.g. your brand name).
+  `audioFormat` is a string representing the format of the audio file. The supported formats are `mp3` and `wav`.
 
-  `trimSilence` is a boolean value. When enabled, the audio will be trimmed to remove any silence from the end of the file.
-  
-  `transcriptionId` - Pass this to update an existing audio file
+  `audioSampleRate` is a string representing the sample rate of the audio file. The supported sample rates are  `24000`, `48000`, 
+
+  `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
+
 
 - Response (JSON):
   ```jsonc
@@ -99,70 +104,49 @@ Use this endpoint to start converting an article from text to audio.
     "error": string // Optional
   }
   ```
-
-  Use the `transcriptionId` in the response to check the conversion status in the [Article status](#article-status) endpoint.
-  
  
 
-### Transcription status
-
-- Endpoint:  `./articleStatus?transcriptionId={transcriptionId}`
-
-Use this endpoint to check the conversion status of your text using its transcription ID.
-
-If the article (text) is converted to audio, the response will contain the audio file URL along with certain metadata such as voice and narration style. A `true` value for `error` field indicates a conversion failure.
-
-Where `{transcriptionId}` is the ID provided in the successful response of [Convert](#convert) endpoint.
-
-- Method: `GET`
-
-- Response (JSON):
-  ```jsonc
-  {
-    "converted": boolean,
-    "error": boolean,         // Optional
-    "errorMessage": string,   // Optional
-    "audioUrl": string,       // Optional
-    "audioDuration": number,  // Optional
-    "voice": string,          // Optional
-    "narrationStyle": string, // Optional
-    "globalSpeed": string,    // Optional
-  }
   ```
+  <!--   "audioDuration": number,  // Optional -->
+  <!--   "voice": string,          // Optional -->
+  <!--   "narrationStyle": string, // Optional -->
+  <!--   "globalSpeed": string,    // Optional -->
+
 
 Optional fields are only provided when applicable.
 
 - Examples (cURL Request):
   ```ssml with pauses
-
+  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/' \
+      --header 'x-listnr-tts-token;' \
+      --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
+      --header 'Content-Type: application/json' \
+      --data-raw '{
+        "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
+        "voice":"en-US-GuyNeural"
+          
+      }'
   ```
 - Example (Python Request):
-  ```
-    var request = require('request');
+      ```
+      import requests
+    import json
 
-    var payload = {
-        "ttsService": "azure",
-        "text": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice": {
-          "value": "en-US-GuyNeural",
-          "lang": "en-US"
-        }
-      };
+    url = "https://bff.listnr.tech/backend/tts/v1/"
 
-    var options = {
-      'method': 'POST',
-      'url': 'https://bff.listnr.tech/api/tts/v1',
-      'headers': {
-        'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z', // YOUR-API-KEY
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
+    payload = json.dumps({
+      "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
+      "voice": "en-US-GuyNeural"
+    })
+    headers = {
+      'x-listnr-tts-token': '',
+      'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
+      'Content-Type': 'application/json'
+    }
 
-    };
-    request(options, function (error, response) {
-      if (error) throw new Error(error);
-      console.log(response.body);
-    });
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
 
   ```
 - Example (NodeJS Request):
@@ -182,7 +166,7 @@ Optional fields are only provided when applicable.
       'method': 'POST',
       'url': 'https://bff.listnr.tech/api/tts/v1',
       'headers': {
-        'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z', // YOUR-API-KEY
+        'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z', // YOUR-API-KEY
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
