@@ -108,49 +108,48 @@ Optional fields are only provided when applicable.
         "voice":"en-US-GuyNeural"
           
       }'
-  ```
-- Example (Python Request):
-      ```ssml with pauses
-      import requests
+      
+
+- Example in Python
+  ``` Example (Python Request):
+    
+    import requests
     import json
 
     url = "https://bff.listnr.tech/backend/tts/v1/convert-text"
 
     payload = json.dumps({
-      "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-      "voice": "en-US-GuyNeural"
-    })
-    headers = {
-      'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
-      'Content-Type': 'application/json'
-    }
+        "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
+        "voice": "en-US-GuyNeural"
+      })
+      headers = {
+        'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
+        'Content-Type': 'application/json'
+      }
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
     print(response.text)
-
   ```
 - Example (NodeJS Request):
   ```ssml with pauses
- var request = require('request');
-var options = {
-  'method': 'POST',
-  'url': 'https://bff.listnr.tech/backend/tts/v1/convert-text',
-  'headers': {
-    'x-listnr-tts-token': '',
-    'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-    "voice": "en-US-GuyNeural"
-  })
+  var request = require('request');
+  var options = {
+    'method': 'POST',
+    'url': 'https://bff.listnr.tech/backend/tts/v1/convert-text',
+    'headers': {
+      'x-listnr-tts-token': '',
+      'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
+      "voice": "en-US-GuyNeural"
+    })
 
-};
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-});
-
-
-```
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
+  });
+  ```
