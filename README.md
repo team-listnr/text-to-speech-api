@@ -1,5 +1,5 @@
 # Listnr Text-to-Speech API
-![](https://s3.amazonaws.com/static.listnr/text-to-speech-api.png)
+![](./listnr_tt_api.png)
 
 Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr'S text-to-speech API. Our [AI voice generator](https://voices.listnr.tech) provides a single interface to convert text to audio using voices across different providers. 
 
