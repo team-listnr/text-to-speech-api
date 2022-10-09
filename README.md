@@ -41,7 +41,7 @@ Make sure to store your API-Keys privately and do not share it. Never use your A
 
 ## Endpoints
 
-- Base URL: `https://bff.listnr.tech/backend/tts/v1/`
+- Base URL: `https://bff.listnr.tech/api/tts/v1/`
 
 **Notes:**
 - All endpoints are relative to the base URL.
@@ -100,7 +100,7 @@ Optional fields are only provided when applicable.
 
 - Examples (cURL Request):
   ```ssml with pauses
-  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/convert-text' \
+  curl --location --request POST 'https://bff.listnr.tech/api/tts/v1/convert-text' \
       --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -116,7 +116,7 @@ Optional fields are only provided when applicable.
     import requests
     import json
 
-    url = "https://bff.listnr.tech/backend/tts/v1/convert-text"
+    url = "https://bff.listnr.tech/api/tts/v1/convert-text"
 
     payload = json.dumps({
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
@@ -136,7 +136,7 @@ Optional fields are only provided when applicable.
   var request = require('request');
   var options = {
     'method': 'POST',
-    'url': 'https://bff.listnr.tech/backend/tts/v1/convert-text',
+    'url': 'https://bff.listnr.tech/api/tts/v1/convert-text',
     'headers': {
       'x-listnr-tts-token': '',
       'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z',
