@@ -18,6 +18,10 @@ Take a look at the at [voices.listnr.tech/voices](https://voices.listnr.tech/voi
 
 Endpoint which is currently available in the API that you will use to convert text to speech:
 1. `/convert-text`: Performs the text-to-speech conversion.
+2. `/convert-url`: Performs the text-to-speech conversion given an article url.
+3. `/available-voices`: Returns a list of all the voices available on Listnr. 
+
+
 <!-- 2. `/convert-article`: Performs the text-to-speech conversion on an article. Given an URL. -->
 <!-- 2. `/voices`: Returns a list of available voices. -->
 <!-- 3. `/languages`: Returns a list of available languages. -->
@@ -41,7 +45,7 @@ Make sure to store your API-Keys privately and do not share it. Never use your A
 
 ## Endpoints
 
-- Base URL: `https://bff.listnr.tech/api/tts/v1/`
+- Base URL: `https://bff.listnr.tech/backend/tts/v1/`
 
 **Notes:**
 - All endpoints are relative to the base URL.
@@ -96,11 +100,102 @@ Use this endpoint to start converting an article from text to audio.
   ```
  
 
+### Convert text to speech by url
+
+- Endpoint:  `./convert-url`
+
+Use this endpoint to start converting an article from text to audio.
+
+- Method: `POST`
+
+- Body (JSON):
+  ```jsonc
+  {
+    "voice": string,
+    "url": string, // URL of the article you want to convert
+    "voiceStyle": string, // Optional         
+    "globalSpeed": string,    // Optional     
+    "audioFormat": string, // Optional 
+    "audioSampleRate": string, // Optional
+    "audioKey": string, // Optional
+  }
+  ```
+
+  - `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
+
+
+
+    - `url` is a string consisting of the URL of the article you want to convert to audio.
+
+  
+  - `voiceStyle` is a string representing the tone and accent of the voice to read the text. Make sure the value for `voiceStyle` is supported by the voice in your request. [Voices](##Voices)
+
+  - `globalSpeed` is a string in the format `<number>%`, where `<number>` is in the closed interval of `[20, 200]`. Use this to speed-up, or slow-down the speaking rate of the speech.
+
+  - `audioFormat` is a string representing the format of the audio file. The supported formats are `mp3` and `wav`.
+
+  - `audioSampleRate` is a string representing the sample rate of the audio file. The supported sample rates are  `24000`, `48000`, 
+
+  - `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
+
+
+- Response (JSON):
+  ```jsonc
+  {
+    "success": boolean,
+    "audioUrl": string,
+    "audioKey": string
+  }
+  ```
+
+### Get Available Voices (Filtered)
+
+- Endpoint:  `./available-voices`
+
+Use this endpoint to start converting an article from text to audio.
+
+- Method: `GET`
+
+- URL Parameters:
+  ```jsonc
+  {
+    "lang": string, // Optional 
+    "style": string, // Optional  
+    "gender": string, // Optional         
+  }
+  ```
+
+  - `lang` is the language of the voice you want to get. Refer to the [Voices reference file](Voices.md) for more details.
+
+
+
+    - `gender` is a string..
+
+  
+  - `style` is a string representing the tone and accent of the voice to read the text. Make sure the value for `style` is supported by the voice in your request. [Voices](##Voices)
+
+
+
+- Response (JSON):
+  ```jsonc
+  {
+    "voices": [
+      {
+        supportedStyles,
+        voice,
+        language,
+        gender,
+      },
+      ...
+    ]
+  }
+  ```
+
 Optional fields are only provided when applicable.
 
 - Examples (cURL Request):
   ```ssml with pauses
-  curl --location --request POST 'https://bff.listnr.tech/api/tts/v1/convert-text' \
+  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/convert-text' \
       --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -116,7 +211,7 @@ Optional fields are only provided when applicable.
     import requests
     import json
 
-    url = "https://bff.listnr.tech/api/tts/v1/convert-text"
+    url = "https://bff.listnr.tech/backend/tts/v1/convert-text"
 
     payload = json.dumps({
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
@@ -132,24 +227,23 @@ Optional fields are only provided when applicable.
     print(response.text)
   ```
 - Example (NodeJS Request):
-  ```ssml with pauses
-  var request = require('request');
-  var options = {
-    'method': 'POST',
-    'url': 'https://bff.listnr.tech/api/tts/v1/convert-text',
-    'headers': {
-      'x-listnr-tts-token': '',
-      'x-listnr-token': 'FEGZ3KM-FQ5443H-QBDHPJT-SAQX84Z',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-      "voice": "en-US-GuyNeural"
-    })
+  ```get filtered voices
+  var axios = require('axios');
 
-  };
-  request(options, function (error, response) {
-    if (error) throw new Error(error);
-    console.log(response.body);
-  });
+    var config = {
+      method: 'get',
+      url: 'https://bff.listnr.tech/api/tts/v1/available-voices?style=angry',
+      headers: { 
+        'x-listnr-token': 'xxxxx-FQ5443H-QBDHPJT-SAQX84Z'
+      }
+    };
+
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   ```
