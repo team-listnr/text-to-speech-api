@@ -1,7 +1,7 @@
 # Listnr Text-to-Speech API
 ![](./listnr_tt_api.png)
 
-Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr'S text-to-speech API. Our [AI voice generator](https://voices.listnr.tech) provides a single interface to convert text to audio using voices across different providers. 
+Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr's text-to-speech API. Our [AI voice generator](https://voices.listnr.tech) provides a single interface to convert text to audio using voices across different providers. 
 
 Using a single text-to-speech API in your projects saves you time and offers many benefits:
 1. You instantly get access to all the voices from Google, Amazon, IBM and Microsoft.
@@ -45,7 +45,7 @@ Make sure to store your API-Keys privately and do not share it. Never use your A
 
 ## Endpoints
 
-- Base URL: `https://bff.listnr.tech/backend/tts/v1/`
+- Base URL: `https://bff.listnr.tech/api/tts/v1/`
 
 **Notes:**
 - All endpoints are relative to the base URL.
@@ -195,7 +195,7 @@ Optional fields are only provided when applicable.
 
 - Examples (cURL Request):
   ```ssml with pauses
-  curl --location --request POST 'https://bff.listnr.tech/backend/tts/v1/convert-text' \
+  curl --location --request POST 'https://bff.listnr.tech/api/tts/v1/convert-text' \
       --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -211,7 +211,7 @@ Optional fields are only provided when applicable.
     import requests
     import json
 
-    url = "https://bff.listnr.tech/backend/tts/v1/convert-text"
+    url = "https://bff.listnr.tech/api/tts/v1/convert-text"
 
     payload = json.dumps({
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
