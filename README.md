@@ -18,8 +18,11 @@ Take a look at the at [voices.listnr.tech/voices](https://voices.listnr.tech/voi
 
 Endpoint which is currently available in the API that you will use to convert text to speech:
 1. `/convert-text`: Performs the text-to-speech conversion.
-2. `/convert-url`: Performs the text-to-speech conversion given an article url.
-3. `/available-voices`: Returns a list of all the voices available on Listnr. 
+2. `/convert-text-async`: Performs the text-to-speech conversion asynchronously - will return a jobId where the status and final result can be retrieved from.
+3. `/convert-url`: Performs the text-to-speech conversion given an article url.
+4. `/convert-url-async`: Performs the text-to-speech conversion given an article url asynchronously - will return a jobId where the status and final result can be retrieved from.
+5. `/available-voices`: Returns a list of all the voices available on Listnr. 
+6. `/jobs/status?jobId={id-of-your-tts-job}`: Returns a list of all the voices available on Listnr. 
 
 
 <!-- 2. `/convert-article`: Performs the text-to-speech conversion on an article. Given an URL. -->
@@ -53,7 +56,7 @@ Make sure to store your API-Keys privately and do not share it. Never use your A
 
 ### Convert text to speech
 
-- Endpoint:  `./convert-text`
+- Endpoint:  `./convert-text` and `./convert-text-async` 
 
 Use this endpoint to start converting an article from text to audio.
 
@@ -98,11 +101,20 @@ Use this endpoint to start converting an article from text to audio.
     "audioKey": string
   }
   ```
+
+- Response for *-async request (JSON):
+  ```jsonc
+  {
+  {
+    "jobId": "173daa27-ab2d-4a2d-b802-f044b40504cb",
+    "audioKey": "e1c3ab5e-d7e3-49d3-a98e-34b84ba5cd90_s3"
+}
+  ```
  
 
 ### Convert text to speech by url
 
-- Endpoint:  `./convert-url`
+- Endpoint:  `./convert-url` and `./convert-url-async`
 
 Use this endpoint to start converting an article from text to audio.
 
@@ -112,7 +124,7 @@ Use this endpoint to start converting an article from text to audio.
   ```jsonc
   {
     "voice": string,
-    "url": string, // URL of the article you want to convert
+    "url": string, // URL of the article you want to convert 
     "voiceStyle": string, // Optional         
     "globalSpeed": string,    // Optional     
     "audioFormat": string, // Optional 
@@ -120,6 +132,7 @@ Use this endpoint to start converting an article from text to audio.
     "audioKey": string, // Optional
   }
   ```
+
 
   - `voice` is the ID of the voice used to synthesize the text. Refer to the [Voices reference file](Voices.md) for more details.
 
@@ -146,6 +159,16 @@ Use this endpoint to start converting an article from text to audio.
     "audioUrl": string,
     "audioKey": string
   }
+  ```
+
+  
+- Response for *-async request (JSON):
+  ```jsonc
+  {
+  {
+    "jobId": "173daa27-ab2d-4a2d-b802-f044b40504cb",
+    "audioKey": "e1c3ab5e-d7e3-49d3-a98e-34b84ba5cd90_s3"
+}
   ```
 
 ### Get Available Voices (Filtered)
@@ -191,7 +214,47 @@ Use this endpoint to start converting an article from text to audio.
   }
   ```
 
+### Get Job Status
+
+- Endpoint:  `./job-status`
+
+This endpoint will return the status of the job, and the audioUrl if the job is completed.
+
+
 Optional fields are only provided when applicable.
+
+- Method: `GET`
+
+- URL Query Parameters:
+  ```jsonc
+  {
+    "jobId": string,
+  }
+  ```
+
+  - `jobId` is the ID of the job you want to get the status of.
+
+
+- Response (JSON):
+  ```jsonc
+  {
+    "jobId": string,
+    "status": string,
+    "audioUrl": string, // Optional
+    "audioKey": string, // Optional
+  }
+  ```
+
+
+- Possible List of Job Statuses:
+  - `PENDING` = The job is waiting to be processed.
+  - `IN_PROGRESS` = The job is currently being processed.
+  - `COMPLETED`= The job has been completed.
+  - `FAILED` = The job has failed.
+
+
+
+### Code Examples
 
 - Examples (cURL Request):
   ```ssml with pauses
