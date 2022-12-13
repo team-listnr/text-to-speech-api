@@ -1,7 +1,7 @@
 # Listnr Text-to-Speech API
 ![](./listnr_tt_api.png)
 
-Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr's text-to-speech API. Our [AI voice generator](https://voices.listnr.tech) provides a single interface to convert text to audio using voices across different providers. 
+Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr's text-to-speech API. Our [AI voice generator](https://www.listnr.tech) provides a single interface to convert text to audio using voices across different providers. 
 
 Using a single text-to-speech API in your projects saves you time and offers many benefits:
 1. You instantly get access to all the voices from Google, Amazon, IBM and Microsoft.
