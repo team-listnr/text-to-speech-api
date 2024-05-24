@@ -2,6 +2,24 @@
 
 ![](./listnr_tt_api.png)
 
+## Table of Contents
+
+- [Listnr Text-to-Speech API](#listnr-text-to-speech-api)
+  - [Table of Contents](#table-of-contents)
+  - [Ultra Premium Voices and Cloned Voices (NEW)](#ultra-premium-voices-and-cloned-voices-new)
+    - [Example Usage](#example-usage)
+    - [Settings](#settings)
+  - [Voices](#voices)
+  - [Overview of API](#overview-of-api)
+  - [Authentication](#authentication)
+  - [Endpoints](#endpoints)
+    - [Convert text to speech](#convert-text-to-speech)
+    - [Convert text to speech and get timestamps for every word](#convert-text-to-speech-and-get-timestamps-for-every-word)
+    - [Convert text to speech by url](#convert-text-to-speech-by-url)
+    - [Get Available Voices (Filtered)](#get-available-voices-filtered)
+    - [Get Job Status](#get-job-status)
+    - [Code Examples](#code-examples)
+
 Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr's text-to-speech API. Our [AI voice generator](https://www.listnr.tech) provides a single interface to convert text to audio using voices across different providers.
 
 Using a single text-to-speech API in your projects saves you time and offers many benefits:
@@ -11,11 +29,92 @@ Using a single text-to-speech API in your projects saves you time and offers man
 3. You don't have to worry about API upgrades or changes made on Google, Amazon, IBM and Microsoft.
 4. Any new voices added on these platforms are instantly available to you.
 
+## Ultra Premium Voices and Cloned Voices (NEW)
+
+We are excited to announce that we are now offering Ultra Premium voices and Cloned voices. These voices are the best of the best and are available for all subscribers. They are the most powerful voices available on Listnr and are perfect for professional use cases.
+
+Introducing 2 new endpoints to the V2 API with Base URL - `https://cloning.listnr.tech/api/v2`
+
+1. `/stream-voice` - This endpoint is used to stream the audio file of a voice. It is a POST request and requires an API key. The API key is available in the [API Keys](https://voices.listnr.tech/api) page.
+2. `/available-voices` - This endpoint is used to get the list of available voices. It is a GET request and optionally requires an API key. Get the list of premade voices and cloned voices (if any) created by you on Listnr.
+
+**Note:** You need to have a Listnr Voices account with word credit to be able to access the API. [Keep reading](#authentication) to learn how to get an API key.
+
+### Example Usage
+
+Python
+
+```python
+import requests
+import json
+
+url = "https://cloning.listnr.tech/api/v2/stream-voice"
+
+payload = json.dumps({
+    "voice_id": "21m00Tcm4TlvDq8ikWAM",
+    "text": "Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common route.",
+    # Using settings is optional
+    "settings": {
+        "stability": 0.71,
+        "similarity_boost": 0.5,
+        "style": 0.0,
+        "use_speaker_boost": False
+    }
+})
+
+headers = {
+    'x-listnr-token': 'XXXXXXX-XXXXXXX-XXXXXXX-YC4M14B',
+    'Content-Type': 'application/json',
+    'Accept': '*/*'
+}
+
+try:
+    response = requests.post(url, headers=headers, data=payload)
+    response.raise_for_status()  # Raises an HTTPError for bad responses
+    print("Response status:", response.status_code)
+
+    # save the response to a file
+    with open("output.wav", "wb") as f:
+        f.write(response.content)
+except requests.exceptions.HTTPError as errh:
+    print("HTTP Error: (Check your API key)", errh)
+except requests.exceptions.ConnectionError as errc:
+    print("Error Connecting:", errc)
+except requests.exceptions.RequestException as err:
+    print("Error:", err)
+
+```
+
+cURL
+
+```bash
+curl -X POST \
+  https://cloning.listnr.tech/api/v2/stream-voice \
+  -H 'x-listnr-token: XXXXXXX-XXXXXXX-QBDEN0A-YC4M14B' \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*' \
+  -d '{
+    "voice_id": "21m00Tcm4TlvDq8ikWAM",
+    "text": "Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common route.",
+    "settings": {
+        "stability": 0.71,
+        "similarity_boost": 0.5,
+        "style": 0.0,
+        "use_speaker_boost": False
+    }
+}'
+```
+
+### Settings
+
+- `stability` - The stability and the randomness of the voice. Lowering this value will make the voice sound more emotional.
+- `similarity_boost` - This determines the similarity between the original voice and the cloned voice. Higher values will make the cloned voice sound more similar to the original voice.
+- `style` - This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0
+- `use_speaker_boost` - It boosts the similarity to the original speaker.
+
 ## Voices
 
 Take a look at the at [voices.listnr.tech/voices](https://voices.listnr.tech/voices) to see all the voices available on Listnr. There you will also find the Voice Identifier, which needs to be passed to the API, when using it.
-
-**Note:** You need to have a Listnr Voices account with word credit to be able to access the API.
 
 ## Overview of API
 
@@ -27,7 +126,7 @@ Endpoint which is currently available in the API that you will use to convert te
 1. `/convert-url`: Performs the text-to-speech conversion given an article url.
 1. `/convert-url-async`: Performs the text-to-speech conversion given an article url asynchronously - will return a jobId where the status and final result can be retrieved from.
 1. `/available-voices`: Returns a list of all the voices available on Listnr.
-1. `/jobs/status?jobId={id-of-your-tts-job}`: Returns a list of all the voices available on Listnr.
+1. `/jobs/status?jobId={id-of-your-tts-job}`: Returns the status of the job
 
 <!-- 2. `/convert-article`: Performs the text-to-speech conversion on an article. Given an URL. -->
 <!-- 2. `/voices`: Returns a list of available voices. -->
@@ -47,7 +146,7 @@ All endpoints require authentication. Authentication consists of the following r
 
 - `x-listnr-token`: This is where your API-key goes.
 
-To get an API key, log in with your Listnr credentials, under [voices.listnr.tech/tts-api](http://voices.listnr.tech/tts-api) to generate a personal api key for you. You will need this API key in the API request through the Listnr TTS API.
+To get an API key, log in with your Listnr credentials, under [voices.listnr.tech/api](http://voices.listnr.tech/api) to generate a personal api key for you. You will need this API key in the API request through the Listnr TTS API.
 
 Make sure to store your API-Keys privately and do not share it. Never use your API-Key in the front-end part of your app or in the browser.
 
@@ -107,10 +206,11 @@ Use this endpoint to start converting an article from text to audio.
   ```
 
 - Response for \*-async request (JSON):
+
   ```jsonc
   {
-  	"jobId": "173daa27-ab2d-4a2d-b802-f044b40504cb",
-  	"audioKey": "e1c3ab5e-d7e3-49d3-a98e-34b84ba5cd90_s3"
+    "jobId": "173daa27-ab2d-4a2d-b802-f044b40504cb",
+    "audioKey": "e1c3ab5e-d7e3-49d3-a98e-34b84ba5cd90_s3"
   }
   ```
 
@@ -194,6 +294,7 @@ Use this endpoint to start converting an article from text to audio.
   - `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
 
 - Response (JSON):
+
   ```jsonc
   {
     "success": boolean,
@@ -201,7 +302,9 @@ Use this endpoint to start converting an article from text to audio.
     "audioKey": string
   }
   ```
+
 - Response for \*-async request (JSON):
+
   ```jsonc
   {
   {
@@ -228,13 +331,14 @@ Use this endpoint to start converting an article from text to audio.
   }
   ```
 
-  - `lang` is the language of the voice you want to get. Refer to the [Voices reference file](Voices.md) for more details.
+  - `lang` is the language of the voice you want to get.
 
     - `gender` is a string..
 
   - `style` is a string representing the tone and accent of the voice to read the text. Make sure the value for `style` is supported by the voice in your request. [Voices](##Voices)
 
 - Response (JSON):
+
   ```jsonc
   {
     "voices": [
@@ -292,11 +396,11 @@ Optional fields are only provided when applicable.
 
   ```ssml with pauses
   curl --location --request POST 'https://bff.listnr.tech/api/tts/v1/convert-text' \
-      --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
+      --header 'x-listnr-token: XXXXXX-XXXXXX-XXXXXX-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice":"en-US-GuyNeural"
+        "voice":"en-US_Matthew"
 
       }'
 
@@ -306,7 +410,6 @@ Optional fields are only provided when applicable.
 - Example in Python
 
   ```Example (Python Request):
-
     import requests
     import json
 
@@ -314,16 +417,26 @@ Optional fields are only provided when applicable.
 
     payload = json.dumps({
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice": "en-US-GuyNeural"
-      })
-      headers = {
-        'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
-        'Content-Type': 'application/json'
-      }
+        "voice": "en-US_Matthew"
+    })
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    headers = {
+    'x-listnr-token': 'XXXXXXX-XXXXXXX-XXXXXXX-YC4M14B',
+    'Content-Type': 'application/json'
+    }
 
-    print(response.text)
+    try:
+        response = requests.post(url, headers=headers, data=payload)
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+
+        print(response.text) # Print the response text
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred (Check your API key): {http_err}")
+    except requests.exceptions.ConnectionError as errc:
+        print("Error Connecting:", errc)
+    except requests.exceptions.RequestException as req_err:
+        print(f"Error occurred: {req_err}")
   ```
 
 - Example (NodeJS Request):
@@ -335,7 +448,7 @@ Optional fields are only provided when applicable.
       method: 'get',
       url: 'https://bff.listnr.tech/api/tts/v1/available-voices?style=angry',
       headers: {
-        'x-listnr-token': 'xxxxx-FQ5443H-QBDHPJT-SAQX84Z'
+        'x-listnr-token': 'XXXXXX-XXXXXX-XXXXXX-SAQX84Z'
       }
     };
 
