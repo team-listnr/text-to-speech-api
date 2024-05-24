@@ -8,6 +8,7 @@
   - [Table of Contents](#table-of-contents)
   - [Ultra Premium Voices and Cloned Voices (NEW)](#ultra-premium-voices-and-cloned-voices-new)
     - [Example Usage](#example-usage)
+    - [Settings](#settings)
   - [Voices](#voices)
   - [Overview of API](#overview-of-api)
   - [Authentication](#authentication)
@@ -42,6 +43,7 @@ Introducing 2 new endpoints to the V2 API with Base URL - `https://cloning.listn
 ### Example Usage
 
 Python
+
 ```python
 import requests
 import json
@@ -51,6 +53,7 @@ url = "https://cloning.listnr.tech/api/v2/stream-voice"
 payload = json.dumps({
     "voice_id": "21m00Tcm4TlvDq8ikWAM",
     "text": "Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common route.",
+    # Using settings is optional
     "settings": {
         "stability": 0.71,
         "similarity_boost": 0.5,
@@ -59,21 +62,27 @@ payload = json.dumps({
     }
 })
 
-# using settings is optional
-
 headers = {
-    'x-listnr-token': 'XXXXXXX-XXXXXXX-QBDEN0A-YC4M14B',
+    'x-listnr-token': 'XXXXXXX-XXXXXXX-XXXXXXX-YC4M14B',
     'Content-Type': 'application/json',
     'Accept': '*/*'
 }
 
-response = requests.request("POST", url, headers=headers, data=payload)
+try:
+    response = requests.post(url, headers=headers, data=payload)
+    response.raise_for_status()  # Raises an HTTPError for bad responses
+    print("Response status:", response.status_code)
 
-print("response is ", response)
+    # save the response to a file
+    with open("output.wav", "wb") as f:
+        f.write(response.content)
+except requests.exceptions.HTTPError as errh:
+    print("HTTP Error: (Check your API key)", errh)
+except requests.exceptions.ConnectionError as errc:
+    print("Error Connecting:", errc)
+except requests.exceptions.RequestException as err:
+    print("Error:", err)
 
-# save the response to a file
-with open("output.wav", "wb") as f:
-    f.write(response.content)
 ```
 
 cURL
@@ -197,6 +206,7 @@ Use this endpoint to start converting an article from text to audio.
   ```
 
 - Response for \*-async request (JSON):
+
   ```jsonc
   {
     "jobId": "173daa27-ab2d-4a2d-b802-f044b40504cb",
@@ -284,6 +294,7 @@ Use this endpoint to start converting an article from text to audio.
   - `audioKey` is a string representing the key of the audio file. This is used to update the same audio file.
 
 - Response (JSON):
+
   ```jsonc
   {
     "success": boolean,
@@ -291,7 +302,9 @@ Use this endpoint to start converting an article from text to audio.
     "audioKey": string
   }
   ```
+
 - Response for \*-async request (JSON):
+
   ```jsonc
   {
   {
@@ -318,13 +331,14 @@ Use this endpoint to start converting an article from text to audio.
   }
   ```
 
-  - `lang` is the language of the voice you want to get. Refer to the [Voices reference file](Voices.md) for more details.
+  - `lang` is the language of the voice you want to get.
 
     - `gender` is a string..
 
   - `style` is a string representing the tone and accent of the voice to read the text. Make sure the value for `style` is supported by the voice in your request. [Voices](##Voices)
 
 - Response (JSON):
+
   ```jsonc
   {
     "voices": [
@@ -382,11 +396,11 @@ Optional fields are only provided when applicable.
 
   ```ssml with pauses
   curl --location --request POST 'https://bff.listnr.tech/api/tts/v1/convert-text' \
-      --header 'x-listnr-token: XXXXXX-FQ5443H-QBDHPJT-SAQX84Z' \
+      --header 'x-listnr-token: XXXXXX-XXXXXX-XXXXXX-SAQX84Z' \
       --header 'Content-Type: application/json' \
       --data-raw '{
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice":"en-US-GuyNeural"
+        "voice":"en-US_Matthew"
 
       }'
 
@@ -396,7 +410,6 @@ Optional fields are only provided when applicable.
 - Example in Python
 
   ```Example (Python Request):
-
     import requests
     import json
 
@@ -404,16 +417,26 @@ Optional fields are only provided when applicable.
 
     payload = json.dumps({
         "ssml": "<speak>Could he be imagining things<break time=\"0.3s\"/><break time=\"0.75s\"/><break strength=\"x-strong\" />Just testing the new common ew common ttsRoute to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test Just testing the new common ttsRoute For azure and s3 and some extra thing to test </speak>",
-        "voice": "en-US-GuyNeural"
-      })
-      headers = {
-        'x-listnr-token': 'XXXXXX-FQ5443H-QBDHPJT-SAQX84Z',
-        'Content-Type': 'application/json'
-      }
+        "voice": "en-US_Matthew"
+    })
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    headers = {
+    'x-listnr-token': 'XXXXXXX-XXXXXXX-XXXXXXX-YC4M14B',
+    'Content-Type': 'application/json'
+    }
 
-    print(response.text)
+    try:
+        response = requests.post(url, headers=headers, data=payload)
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+
+        print(response.text) # Print the response text
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred (Check your API key): {http_err}")
+    except requests.exceptions.ConnectionError as errc:
+        print("Error Connecting:", errc)
+    except requests.exceptions.RequestException as req_err:
+        print(f"Error occurred: {req_err}")
   ```
 
 - Example (NodeJS Request):
@@ -425,7 +448,7 @@ Optional fields are only provided when applicable.
       method: 'get',
       url: 'https://bff.listnr.tech/api/tts/v1/available-voices?style=angry',
       headers: {
-        'x-listnr-token': 'xxxxx-FQ5443H-QBDHPJT-SAQX84Z'
+        'x-listnr-token': 'XXXXXX-XXXXXX-XXXXXX-SAQX84Z'
       }
     };
 
