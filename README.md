@@ -9,13 +9,15 @@
   - [Ultra Premium Voices and Cloned Voices (NEW)](#ultra-premium-voices-and-cloned-voices-new)
     - [Example Usage](#example-usage)
     - [Settings](#settings)
+  - [Convert text to speech by PDF URL](#convert-text-to-speech-by-pdf-url)
+    - [Example Usage](#example-usage-1)
   - [Voices](#voices)
   - [Overview of API](#overview-of-api)
   - [Authentication](#authentication)
   - [Endpoints](#endpoints)
     - [Convert text to speech](#convert-text-to-speech)
     - [Convert text to speech and get timestamps for every word](#convert-text-to-speech-and-get-timestamps-for-every-word)
-    - [Convert text to speech by url](#convert-text-to-speech-by-url)
+    - [Convert text to speech by URL](#convert-text-to-speech-by-url)
     - [Get Available Voices (Filtered)](#get-available-voices-filtered)
     - [Get Job Status](#get-job-status)
     - [Code Examples](#code-examples)
@@ -111,6 +113,56 @@ curl -X POST \
 - `similarity_boost` - This determines the similarity between the original voice and the cloned voice. Higher values will make the cloned voice sound more similar to the original voice.
 - `style` - This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0
 - `use_speaker_boost` - It boosts the similarity to the original speaker.
+
+## Convert text to speech by PDF URL (NEW)
+
+Introducing text to speech for PDFs. This is a new feature that allows you to convert text from PDFs to audio. It is a great way to add text to your PDF documents and make them more engaging for your audience.
+
+### Example Usage
+
+Python
+
+```python
+import requests
+import json
+
+url = "https://cloning.listnr.tech/api/v2/pdf-to-audio"
+
+payload = json.dumps({
+    "voice_id": "21m00Tcm4TlvDq8ikWAM",
+    "pdf_file_url": "https://s3.us-east-2.amazonaws.com/listnr-assets/pdfs/test.pdf",
+
+    # Using settings is optional
+    "settings": {
+        "stability": 0.71,
+        "similarity_boost": 0.5,
+        "style": 0.0,
+        "use_speaker_boost": False
+    }
+})
+
+headers = {
+    'x-listnr-token': 'XXXXXXX-XXXXXXX-XXXXXXX-YC4M14B',
+    'Content-Type': 'application/json',
+    'Accept': '*/*'
+}
+
+try:
+    response = requests.post(url, headers=headers, data=payload)
+    response.raise_for_status()  # Raises an HTTPError for bad responses
+    print("Response status:", response.status_code)
+
+    # save the response to a file
+    with open("output.wav", "wb") as f:
+        f.write(response.content)
+except requests.exceptions.HTTPError as errh:
+    print("HTTP Error: (Check your API key)", errh)
+except requests.exceptions.ConnectionError as errc:
+    print("Error Connecting:", errc)
+except requests.exceptions.RequestException as err:
+    print("Error:", err)
+
+```
 
 ## Voices
 
@@ -257,7 +309,7 @@ The signature of this endpoint is same as `/convert-text`.
   }
   ```
 
-### Convert text to speech by url
+### Convert text to speech by URL
 
 - Endpoint: `./convert-url` and `./convert-url-async`
 
