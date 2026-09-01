@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "listnr",
+  "version": "1.0.0",
+  "description": "Listnr agent plugin for Studio video tools and the text-to-speech API.",
+  "homepage": "https://studio.listnr.ai",
+  "repository": "https://github.com/team-listnr/text-to-speech-api",
+  "license": "MIT",
+  "keywords": ["listnr", "studio", "tts", "mcp", "skill"],
+  "author": {
+    "name": "Listnr",
+    "email": "support@listnr.ai",
+    "url": "https://listnr.ai"
+  }
+}

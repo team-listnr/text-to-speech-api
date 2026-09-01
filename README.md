@@ -21,6 +21,7 @@
     - [Get Available Voices (Filtered)](#get-available-voices-filtered)
     - [Get Job Status](#get-job-status)
     - [Code Examples](#code-examples)
+  - [Agent skill](#agent-skill)
 
 Access all the best text-to-speech AI voices from Google, Amazon, IBM and Microsoft using Listnr's text-to-speech API. Our [AI voice generator](https://www.listnr.tech) provides a single interface to convert text to audio using voices across different providers.
 
@@ -514,7 +515,15 @@ Optional fields are only provided when applicable.
 
   ```
 
-
-
-
 By [Team Listnr](https://listnr.ai/) | [EzUGC](https://www.ezugc.ai/)
+
+## Agent skill
+
+Install Listnr skills for AI agents:
+
+```bash
+npx skills add team-listnr/text-to-speech-api
+```
+
+This repo also contains `AGENTS.md`, `plugin.json`, `mcp.json`, `SKILL.md`, and `skills/listnr-studio` plus `skills/listnr-tts`. Listnr Studio MCP lives at https://studio.listnr.ai/mcp.
+
